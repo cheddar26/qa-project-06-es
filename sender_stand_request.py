@@ -2,30 +2,44 @@ import requests
 import configuration
 import data
 
-def inf_nwtokn(name):
-    ch_name = data.body_kit.copy()
-    ch_name["name"] = name
-    return ch_name
 
-def inf_nwuser(name):
-    ch_name = data.N_user.copy()
-    ch_name["firstName"] = name
-    return ch_name
 
-def created_user():
+def creation_new_user(namenw):
+    json_body_new_user = information_new_usser(namenw)
+    json_body_new_user_response = post_new_user(json_body_new_user)
+    assert json_body_new_user_response.status_code == 201,"No se creó el usuario."
+    assert json_body_new_user_response.json()["authToken"] != "","No generó token."
+    tkn = json_body_new_user_response.json()
+    tab_nwuser = get_created_user()
+    str_user = json_body_new_user["firstName"] + "," + json_body_new_user["phone"] + "," \
+               + json_body_new_user["address"] + ",,," + tkn["authToken"]
+    assert tab_nwuser.text.count(str_user) == 1
+    return tkn
+def information_new_token(name):
+    change_name_token = data.body_new_kit.copy()
+    change_name_token["name"] = name
+    return change_name_token
+
+def change_headers_authorization(token):
+    change_tipe_header = data.headers.copy()
+    change_tipe_header["Authorization"]= f"Bearer {token}"
+    return change_tipe_header
+
+def information_new_usser(name):
+    change_name_user = data.body_new_user.copy()
+    change_name_user["firstName"] = name
+    return change_name_user
+
+def get_created_user():
     return requests.get(configuration.URL_SERVICE + configuration.USERS_TABLE_PATH)
 
-def new_user(body):
+def post_new_user(body):
     return requests.post(configuration.URL_SERVICE + configuration.CREATE_USER_PATH,
                          json=body,
                          headers=data.headers)
 
-
 def post_new_kit(kit_body,auth_token):
-    headers = {
-        'Authorization': 'Bearer '+ auth_token['authToken']
-    }
     return requests.post(configuration.URL_SERVICE + configuration.KITS_PATH,
                          json = kit_body,
-                         headers = headers)
+                         headers = auth_token)
 
