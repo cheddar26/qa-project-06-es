@@ -17,32 +17,32 @@ def validate_new_kit_response_400(name_kit,usser_token):
     assert response_tokn.json()["code"] == 400,"No se creó el kit"
     assert response_tokn.json()["menssage"] == ("No se han aprobado todos los parámetros requeridos")
 
-tookn = sender_stand_request.creation_new_user("Navor")
+token_created_new_user = sender_stand_request.creation_new_user("Navor")
 
 
 def test_create_kit_1_characters():
-    validate_new_kit_response_201(data.one_character, tookn)
+    validate_new_kit_response_201(data.one_character, token_created_new_user)
 
 def test_create_kit_511_characters():
-    validate_new_kit_response_201(data.five_hundred_eleven_characters,tookn)
+    validate_new_kit_response_201(data.five_hundred_eleven_characters,token_created_new_user)
 def test_create_kit_0_characters():
-    validate_new_kit_response_400(data.zero_character,tookn)
+    validate_new_kit_response_400(data.zero_character,token_created_new_user)
 
 def test_not_created_kit_512_ccharacters():
-    validate_new_kit_response_400(data.five_hundred_twelve_characters,tookn)
+    validate_new_kit_response_400(data.five_hundred_twelve_characters,token_created_new_user)
 
 def test_created_kit_special_characters():
-    validate_new_kit_response_201(data.special_characters,tookn)
+    validate_new_kit_response_201(data.special_characters,token_created_new_user)
 
 def test_created_kit_with_gap():
-    validate_new_kit_response_201(data.characteres_with_gap,tookn)
+    validate_new_kit_response_201(data.characteres_with_gap,token_created_new_user)
 
 def test_created_kit_with_numbers():
-    validate_new_kit_response_201(data.numeric_characters,tookn)
+    validate_new_kit_response_201(data.numeric_characters,token_created_new_user)
 
 def test_not_created_kit_without_parameter():
-    validate_new_kit_response_400(data.without_parameter,tookn)
+    validate_new_kit_response_400(data.without_parameter,token_created_new_user)
 
 def test_not_created_kit_with_another_parameter():
-    validate_new_kit_response_400(data.another_parameter,tookn)
+    validate_new_kit_response_400(data.another_parameter,token_created_new_user)
 
